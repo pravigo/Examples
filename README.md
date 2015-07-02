@@ -9,7 +9,7 @@ Create a .env file in the root of the project.  (Note the .gitignore file keepin
 Add this line to your .env file:
 
 ```
-UPDATE_DURATION=10
+TIME_ON_THE_ROAD_VARIANCE=10
 ```
 
 ## Usage
