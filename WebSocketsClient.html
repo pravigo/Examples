@@ -1,0 +1,20 @@
+<html>
+<body>
+  <script type='text/javascript'>
+    var socket       = new WebSocket('ws://localhost:3000/');
+    socket.onopen    = function()  {alert("socket opened")};
+    socket.onmessage = function(m) {
+	
+	var theDiv = document.getElementById("update");
+	var content = document.createTextNode("Staying Alive\n");
+	if (m.data != "\n"){
+		content = document.createTextNode(m.data);
+	}
+    theDiv.appendChild(content);
+	};
+    socket.onclose   = function()  {alert("socket closed")};
+  </script>
+  
+  <pre id='update'></pre>
+</body>
+</html>
