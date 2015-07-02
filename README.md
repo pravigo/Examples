@@ -4,18 +4,21 @@ a place to experiment and learn
 
 ## Installation
 
-Create a .env file in the root of the project.  (Note the gitignore keeping .env files out of Git)
+Create a .env file in the root of the project.  (Note the .gitignore file keeping .env files out of source control)
 
 Add this line to your .env file:
 
-'UPDATE_DURATION=10
-
+```
+UPDATE_DURATION=10
+```
 
 ## Usage
 
 Open a console and navigate to the root of the project.  Type:
 
-'thin start -R StreamingServerConfig.ru -p 3000
+```
+thin start -R StreamingServerConfig.ru -p 3000
+```
 
 (Ctrl+C followed by Y to interrupt the server)
 
