@@ -8,7 +8,8 @@ require 'json'
 
 Dotenv.load(File.expand_path("../.env",  __FILE__))
 
-SPEED_UP_FACTOR = (ENV['SPEED_UP_FACTOR'].to_i || 10)
+SPEED_UP_FACTOR = (ENV['SPEED_UP_FACTOR'].to_i || 20)
+puts SPEED_UP_FACTOR
 WEBSOCKETS_SERVER_ADDRESS = (ENV['WEBSOCKETS_SERVER_ADDRESS'] || 'wss://pravigo-chat.herokuapp.com/')
 FILENAME = (ENV['FILENAME'] || "2015Jul12.csv")
 CYCLIST_HANDLE = (ENV['CYCLIST_HANDLE'] || "Millsey")
@@ -27,12 +28,15 @@ EM.run {
       if line = io.gets 
 
         if !previous_line.blank?
-          current_time = Time.parse(CSV.parse(line)[0][0])
+          parsed_line = CSV.parse(line)
+          current_time = Time.parse(parsed_line[0][0])
           previous_time = Time.parse(CSV.parse(previous_line)[0][0])
           time_to_wait = Duration.new(current_time-previous_time).to_i
-          message = { handle: CYCLIST_HANDLE, text: "#{CSV.parse(line)}"}
-          ws.send(message.to_json)
+          
+          payload = { :handle=>CYCLIST_HANDLE, :text=>"GPS", :GMTTIMESTAMP=>parsed_line[0][0], :LATITUDE=>parsed_line[0][2], :LONGITUDE=>parsed_line[0][1], :ALTITUDE=>parsed_line[0][3], :ACCURACY=>parsed_line[0][4] }
+          message = payload
           EM.add_timer(time_to_wait/SPEED_UP_FACTOR) do
+            ws.send(message.to_json)
             puts "I waited #{time_to_wait} seconds"
             previous_line = line
             EM.next_tick(read_chunk)
